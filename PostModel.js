@@ -1,17 +1,14 @@
 "use strict";
 
 const db = require('./db');
+const tableName = 'posts';
 
-class testModel {
-  constructor() {
-    this.table = 'test1';
-  }
-
+class PostModel {
   getAll() {
     return new Promise((resolve, reject) => {
       db
         .orderBy('id')
-        .from(this.table)
+        .from(tableName)
         .then(rows => {
           resolve(rows);
         })
@@ -25,7 +22,7 @@ class testModel {
     return new Promise((resolve, reject) => {
       db
         .first()
-        .from(this.table)
+        .from(tableName)
         .where('id', '=', id)
         .then(rows => {
           resolve(rows);
@@ -42,7 +39,7 @@ class testModel {
         .insert({
           content: record
         })
-        .into(this.table)
+        .into(tableName)
         .returning('*')
         .then(rows => {
           resolve(rows[0]);
@@ -57,7 +54,7 @@ class testModel {
     const { id, content } = params;
     return new Promise((resolve, reject) => {
       db
-        .from(this.table)
+        .from(tableName)
         .where('id', '=', id)
         .update({
           content: content
@@ -73,4 +70,4 @@ class testModel {
   }
 }
 
-module.exports = testModel;
+module.exports = PostModel;

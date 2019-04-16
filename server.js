@@ -5,8 +5,8 @@ const express = require('express');
 const app = express();
 const port = process.env.PORT || 3000;
 
-const testModel = require('./testModel');
-const test = new testModel();
+const PostModel = require('./PostModel');
+const post = new PostModel();
 
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
@@ -27,30 +27,30 @@ app.get('/', (req, res) => {
   handleResponse(res, { 'message': 'OK' });
 });
 
-app.get('/test', (req, res) => {
-  test.getAll()
+app.get('/posts', (req, res) => {
+  post.getAll()
     .then(data => handleResponse(res, data))
     .catch(err => console.log(err));
 });
 
-app.get('/test/:id', (req, res) => {
-  test.get(req.params.id)
+app.get('/posts/:id', (req, res) => {
+  post.get(req.params.id)
     .then(data => handleResponse(res, data))
     .catch(err => console.log(err));
 });
 
-app.post('/test', (req, res) => {
-  test.create(req.body.content)
+app.post('/posts', (req, res) => {
+  post.create(req.body.content)
     .then(data => handleResponse(res, data))
     .catch(err => console.log(err));
 });
 
-app.put('/test', (req, res) => {
+app.put('/posts', (req, res) => {
   const params = { 
     id: req.body.id, 
     content: req.body.content 
   };
-  test.update(params)
+  post.update(params)
     .then(data => handleResponse(res, data))
     .catch(err => console.log(err));
 });
