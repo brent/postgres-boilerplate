@@ -4,7 +4,7 @@ const db = require('./db');
 const tableName = 'posts';
 
 class PostModel {
-  getAll() {
+  static getAll() {
     return new Promise((resolve, reject) => {
       db
         .orderBy('id')
@@ -18,7 +18,7 @@ class PostModel {
     });
   }
 
-  get(id) {
+  static get(id) {
     return new Promise((resolve, reject) => {
       db
         .first()
@@ -33,7 +33,7 @@ class PostModel {
     });
   }
 
-  create(record) {
+  static create(record) {
     return new Promise((resolve, reject) => {
       db
         .insert({
@@ -50,7 +50,7 @@ class PostModel {
     });
   }
 
-  update(params) {
+  static update(params) {
     const { id, content } = params;
     return new Promise((resolve, reject) => {
       db

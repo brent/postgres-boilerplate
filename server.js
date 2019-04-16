@@ -5,8 +5,7 @@ const express = require('express');
 const app = express();
 const port = process.env.PORT || 3000;
 
-const PostModel = require('./PostModel');
-const post = new PostModel();
+const Post = require('./PostModel');
 
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
@@ -28,19 +27,19 @@ app.get('/', (req, res) => {
 });
 
 app.get('/posts', (req, res) => {
-  post.getAll()
+  Post.getAll()
     .then(data => handleResponse(res, data))
     .catch(err => console.log(err));
 });
 
 app.get('/posts/:id', (req, res) => {
-  post.get(req.params.id)
+  Post.get(req.params.id)
     .then(data => handleResponse(res, data))
     .catch(err => console.log(err));
 });
 
 app.post('/posts', (req, res) => {
-  post.create(req.body.content)
+  Post.create(req.body.content)
     .then(data => handleResponse(res, data))
     .catch(err => console.log(err));
 });
@@ -50,7 +49,7 @@ app.put('/posts', (req, res) => {
     id: req.body.id, 
     content: req.body.content 
   };
-  post.update(params)
+  Post.update(params)
     .then(data => handleResponse(res, data))
     .catch(err => console.log(err));
 });
