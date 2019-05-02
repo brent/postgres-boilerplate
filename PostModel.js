@@ -57,7 +57,8 @@ class PostModel {
         .from(tableName)
         .where('id', '=', id)
         .update({
-          content: content
+          content: content,
+          modified_at: db.fn.now()
         })
         .returning('*')
         .then(rows => {

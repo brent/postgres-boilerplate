@@ -16,6 +16,7 @@ db.schema.hasTable('posts').then((exists) => {
       t.increments('id').primary();
       t.text('content');
       t.timestamp('created_at').defaultTo(db.fn.now());
+      t.timestamp('modified_at').defaultTo(db.fn.now());
     });
   }
 });
