@@ -10,4 +10,14 @@ const db = require('knex')({
   }
 });
 
+db.schema.hasTable('posts').then((exists) => {
+  if (!exists) {
+    return db.schema.createTable('posts', (t) => {
+      t.increments('id').primary();
+      t.text('content');
+      t.timestamp('created_at').defaultTo(db.fn.now());
+    });
+  }
+});
+
 module.exports = db;
