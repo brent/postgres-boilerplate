@@ -44,9 +44,9 @@ app.post('/posts', (req, res) => {
     .catch(err => console.log(err));
 });
 
-app.put('/posts', (req, res) => {
+app.put('/posts/:id', (req, res) => {
   const params = { 
-    id: req.body.id, 
+    id: req.params.id, 
     content: req.body.content 
   };
   Post.update(params)
