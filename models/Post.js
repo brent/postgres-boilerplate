@@ -3,7 +3,7 @@
 const db = require('../db.js');
 const tableName = 'posts';
 
-class PostModel {
+class Post {
   static getAll() {
     return new Promise((resolve, reject) => {
       db
@@ -71,4 +71,4 @@ class PostModel {
   }
 }
 
-module.exports = PostModel;
+module.exports = Post;
