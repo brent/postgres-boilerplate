@@ -12,12 +12,31 @@ const db = require('knex')({
 
 db.schema.hasTable('posts').then((exists) => {
   if (!exists) {
-    return db.schema.createTable('posts', (t) => {
-      t.increments('id').primary();
-      t.text('content');
-      t.timestamp('created_at').defaultTo(db.fn.now());
-      t.timestamp('modified_at').defaultTo(db.fn.now());
-    });
+    return db.schema
+      .raw('CREATE EXTENSION IF NOT EXISTS "uuid-ossp"')
+      .createTable('posts', (t) => {
+        t.uuid('id').notNullable().primary().defaultTo(db.raw("uuid_generate_v4()"));
+        t.text('content').notNullable();
+        t.timestamp('created_at').defaultTo(db.fn.now());
+        t.timestamp('modified_at').defaultTo(db.fn.now());
+      }
+    );
+  }
+});
+
+db.schema.hasTable('users').then((exists) => {
+  if (!exists) {
+    return db.schema
+      .raw('CREATE EXTENSION IF NOT EXISTS "uuid-ossp"')
+      .createTable('users', (t) => {
+        t.uuid('id').notNullable().primary().defaultTo(db.raw("uuid_generate_v4()"));
+        t.text('username').notNullable().unique();
+        t.text('email').notNullable().unique();
+        t.text('password').notNullable();
+        t.timestamp('created_at').defaultTo(db.fn.now());
+        t.timestamp('modified_at').defaultTo(db.fn.now());
+      }
+    );
   }
 });
 

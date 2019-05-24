@@ -1,5 +1,5 @@
 {
-  "name": "postgres-test",
+  "name": "postgres-boilerplate",
   "version": "0.0.1",
   "main": "index.js",
   "author": "brent",
@@ -8,6 +8,7 @@
     "start": "nodemon -w ./ server.js"
   },
   "dependencies": {
+    "bcrypt": "^3.0.6",
     "body-parser": "^1.18.3",
     "dotenv": "^7.0.0",
     "express": "^4.16.4",
