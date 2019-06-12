@@ -47,7 +47,6 @@ class User {
         .catch(err => {
           reject(err);
         });
-
     });
   }
 

@@ -14,13 +14,12 @@ db.schema.hasTable('posts').then((exists) => {
   if (!exists) {
     return db.schema
       .raw('CREATE EXTENSION IF NOT EXISTS "uuid-ossp"')
-      .createTable('posts', (t) => {
+      .createTable('posts', t => {
         t.uuid('id').notNullable().primary().defaultTo(db.raw("uuid_generate_v4()"));
         t.text('content').notNullable();
-        t.timestamp('created_at').defaultTo(db.fn.now());
-        t.timestamp('modified_at').defaultTo(db.fn.now());
-      }
-    );
+        t.timestamp('createdAt').defaultTo(db.fn.now());
+        t.timestamp('modifiedAt').defaultTo(db.fn.now());
+      });
   }
 });
 
@@ -28,15 +27,28 @@ db.schema.hasTable('users').then((exists) => {
   if (!exists) {
     return db.schema
       .raw('CREATE EXTENSION IF NOT EXISTS "uuid-ossp"')
-      .createTable('users', (t) => {
+      .createTable('users', t => {
         t.uuid('id').notNullable().primary().defaultTo(db.raw("uuid_generate_v4()"));
         t.text('username').notNullable().unique();
         t.text('email').notNullable().unique();
         t.text('password').notNullable();
-        t.timestamp('created_at').defaultTo(db.fn.now());
-        t.timestamp('modified_at').defaultTo(db.fn.now());
-      }
-    );
+        t.timestamp('createdAt').defaultTo(db.fn.now());
+        t.timestamp('modifiedAt').defaultTo(db.fn.now());
+      });
+  }
+});
+
+db.schema.hasTable('tokens').then((exists) => {
+  if (!exists) {
+    return db.schema
+      .raw('CREATE EXTENSION IF NOT EXISTS "uuid-ossp"')
+      .createTable('tokens', t => {
+        t.uuid('id').notNullable().primary().defaultTo(db.raw("uuid_generate_v4()"));
+        t.uuid('userId').references('id').inTable('users').unique();
+        t.uuid('token');
+        t.timestamp('createdAt').defaultTo(db.fn.now());
+        t.timestamp('modifiedAt').defaultTo(db.fn.now());
+      });
   }
 });
 
