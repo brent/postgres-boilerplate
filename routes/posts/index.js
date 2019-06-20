@@ -2,7 +2,7 @@
 
 const router = require('express').Router();
 const Post = require('../../models/Post');
-const handleResponse = require('../helpers').handleResponse;
+const handleResponse = require('../routeHelpers').handleResponse;
 
 router.get('/', (req, res) => {
   Post.getAll()
@@ -17,7 +17,7 @@ router.get('/:id', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-  Post.create(req.body.content)
+  Post.createForUser(req.body.content, req.decoded.userId)
     .then(data => handleResponse(res, data))
     .catch(err => console.log(err));
 });
@@ -28,7 +28,7 @@ router.put('/:id', (req, res) => {
     content: req.body.content 
   };
 
-  Post.update(params)
+  Post.updateForUser(params, req.decoded.userId)
     .then(data => handleResponse(res, data))
     .catch(err => console.log(err));
 });

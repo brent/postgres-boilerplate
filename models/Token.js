@@ -35,6 +35,9 @@ class Token {
     });
   }
 
+  // TODO: Refactor
+  // a token should be generateable with just
+  // a user id as well
   static generateAccessToken(user) {
     const params = {
       userId: user.id,
@@ -44,6 +47,32 @@ class Token {
     const token = jwt.sign(params, JWT_SECRET, { expiresIn: 300 });
 
     return token;
+  }
+
+  static decode(token) {
+    return new Promise((resolve, reject) => {
+      jwt.verify(token, JWT_SECRET, (err, decoded) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(decoded);
+      });
+    });
+  }
+
+  static updateRefreshToken(userId, refreshToken) {
+    return new Promise((resolve, reject) => {
+      const newToken = Token.generateRefreshToken();
+      db
+        .where({
+          'userId': userId,
+          'token': refreshToken
+        })
+        .update('token', newToken)
+        .from(TABLE_NAME)
+        .then(() => resolve(newToken))
+        .catch(err => console.log(err))
+    });
   }
 
   static generateRefreshToken() {

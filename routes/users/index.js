@@ -2,7 +2,7 @@
 
 const router = require('express').Router();
 const User = require('../../models/User');
-const handleResponse = require('../helpers').handleResponse;
+const handleResponse = require('../routeHelpers').handleResponse;
 
 router.get('/', (req, res) => {
   User.getAll()

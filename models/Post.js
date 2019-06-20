@@ -33,10 +33,11 @@ class Post {
     });
   }
 
-  static create(record) {
+  static createForUser(record, userId) {
     return new Promise((resolve, reject) => {
       db
         .insert({
+          userId: userId,
           content: record
         })
         .into(tableName)
@@ -50,15 +51,18 @@ class Post {
     });
   }
 
-  static update(params) {
+  static updateForUser(params, userId) {
     const { id, content } = params;
     return new Promise((resolve, reject) => {
       db
         .from(tableName)
-        .where('id', '=', id)
+        .where({
+          id: id,
+          userId: userId
+        })
         .update({
           content: content,
-          modified_at: db.fn.now()
+          modifiedAt: db.fn.now()
         })
         .returning('*')
         .then(rows => {

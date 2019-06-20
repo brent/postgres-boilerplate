@@ -62,7 +62,7 @@ class User {
               password: hash,
             })
             .into(tableName)
-            .returning('*')
+            .returning(['id', 'username'])
             .then(rows => {
               resolve(rows[0]);
             })
