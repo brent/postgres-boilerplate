@@ -16,6 +16,7 @@ db.schema.hasTable('posts').then((exists) => {
       .raw('CREATE EXTENSION IF NOT EXISTS "uuid-ossp"')
       .createTable('posts', t => {
         t.uuid('id').notNullable().primary().defaultTo(db.raw("uuid_generate_v4()"));
+        t.uuid('userId').references('id').inTable('users').unique();
         t.text('content').notNullable();
         t.timestamp('createdAt').defaultTo(db.fn.now());
         t.timestamp('modifiedAt').defaultTo(db.fn.now());
