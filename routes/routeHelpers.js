@@ -7,6 +7,14 @@ const handleResponse = function(res, data) {
   });
 };
 
+const errorHandler = function(err, req, res, next) {
+  const status = err.statusCode || 500;
+  res.status(status).send({
+    'error': err.message,
+  });
+}
+
 module.exports = {
   handleResponse,
+  errorHandler,
 };

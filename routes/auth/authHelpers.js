@@ -9,7 +9,10 @@ const requireAuth = (req, res, next) => {
       req.decoded = decoded;
       next();
     })
-    .catch(err => console.log(err));
+    .catch(err => {
+      err.statusCode = 403;
+      next(err);
+    });
 }
 
 module.exports = {

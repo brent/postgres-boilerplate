@@ -71,7 +71,7 @@ class Token {
         .update('token', newToken)
         .from(TABLE_NAME)
         .then(() => resolve(newToken))
-        .catch(err => console.log(err))
+        .catch(err => reject(err))
     });
   }
 
