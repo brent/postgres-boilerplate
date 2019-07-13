@@ -19,8 +19,8 @@ router.post('/signup', (req, res) => {
         const jwt = Token.generateAccessToken(user);
         const data = {
           user,
-          'accessToken': jwt,
-          'refreshToken': refreshToken,
+          'access': jwt,
+          'refresh': refreshToken,
         };
 
         handleResponse(res, data);
@@ -42,8 +42,8 @@ router.post('/login', (req, res) => {
         const jwt = Token.generateAccessToken(user);
         const data = {
           user,
-          'accessToken': jwt,
-          'refreshToken': refreshToken,
+          'access': jwt,
+          'refresh': refreshToken,
         };
 
         handleResponse(res, data);
@@ -61,8 +61,8 @@ router.post('/token', (req, res) => {
     .then((newRefreshToken) => {
       const jwt = Token.generateAccessToken({ id: userId, username: null});
       const data = {
-        'accessToken': jwt,
-        'refreshToken': newRefreshToken,
+        'access': jwt,
+        'refresh': newRefreshToken,
       };
 
       handleResponse(res, data);

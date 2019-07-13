@@ -3,7 +3,7 @@
 const Token = require('../../models/Token');
 
 const requireAuth = (req, res, next) => {
-  const token = req.query.accessToken || req.body.accessToken;
+  const token = req.query.auth || req.body.auth;
   Token.decode(token)
     .then(decoded => {
       req.decoded = decoded;
