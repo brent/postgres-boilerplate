@@ -8,45 +8,58 @@ const tableName = 'users';
 class User {
   static getAll() {
     return new Promise((resolve, reject) => {
-      db
-        .orderBy('id')
-        .from(tableName)
-        .then(rows => {
-          resolve(rows);
-        })
-        .catch(err => {
-          reject(err)
-        });
+      const getAllSQL = `
+        SELECT id, username
+        FROM users;
+      `;
+
+      const query = {
+        text: getAllSQL,
+      };
+
+      db.query(query)
+        .then(res => resolve(res.rows))
+        .catch(err => reject(err))
     });
   }
 
   static get(id) {
     return new Promise((resolve, reject) => {
-      db
-        .first()
-        .from(tableName)
-        .where('id', '=', id)
-        .then(rows => {
-          resolve(rows);
-        })
-        .catch(err => {
-          reject(err);
-        });
+      const findByIdSQL = `
+        SELECT id, username
+        FROM users
+        WHERE id = $1
+        LIMIT 1;
+      `;
+
+      const query = {
+        text: findByIdSQL,
+        values: [id],
+      };
+
+      db.query(query)
+        .then(res => resolve(res.rows[0]))
+        .catch(err => reject(err));
     });
   }
 
   static findByUsername(username) {
     return new Promise((resolve, reject) => {
-      db
-        .first()
-        .from(tableName)
-        .where('username', '=', username)
-        .then(rows => {
-          resolve(rows);
-        })
-        .catch(err => {
-          reject(err);
-        });
+      const findByUsernameSQL = `
+        SELECT *
+        FROM users
+        WHERE username = $1
+        LIMIT 1;
+      `;
+
+      const query = {
+        text: findByUsernameSQL,
+        values: [username],
+      }
+
+      db.query(query)
+        .then(res => resolve(res.rows[0]))
+        .catch(err => reject(err));
     });
   }
 
@@ -55,20 +68,20 @@ class User {
 
     return new Promise((resolve, reject) => {
       User.generateHash(password).then(hash => {
-          db
-            .insert({
-              username: username,
-              email: email,
-              password: hash,
-            })
-            .into(tableName)
-            .returning(['id', 'username'])
-            .then(rows => {
-              resolve(rows[0]);
-            })
-            .catch(err => {
-              reject(err);
-            });
+        const createUserSQL = `
+          INSERT INTO users(username, email, password)
+          VALUES ($1, $2, $3)
+          RETURNING id, username;
+        `;
+
+        const query = {
+          text: createUserSQL,
+          values: [username, email, hash],
+        };
+
+        db.query(query)
+          .then(res => resolve(res.rows[0]))
+          .catch(err => reject(err));
         });
     });
   }
@@ -78,22 +91,24 @@ class User {
 
     return new Promise((resolve, reject) => {
       User.generateHash(password).then(hash => {
-        db
-          .from(tableName)
-          .where('id', '=', id)
-          .update({
-            username: username,
-            email: email,
-            password: hash,
-            modified_at: db.fn.now()
-          })
-          .returning('*')
-          .then(rows => {
-            resolve(rows[0]);
-          })
-          .catch(err => {
-            reject(err)
-          });
+        const updateUserSQL = `
+          UPDATE users
+          SET 
+            username = $2,
+            email = $3,
+            password = $4
+          WHERE id = $1
+          RETURNING id, username;
+        `;
+
+        const query = {
+          text: updateUserSQL,
+          values: [id, username, email, hash]
+        }
+
+        db.query(query)
+          .then(res => resolve(res.rows[0]))
+          .catch(err => reject(err));
       });
     });
   }
