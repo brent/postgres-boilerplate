@@ -8,15 +8,15 @@
     "start": "nodemon -w ./ server.js"
   },
   "dependencies": {
-    "bcrypt": "^3.0.6",
+    "bcrypt": "^5.0.0",
     "body-parser": "^1.18.3",
-    "dotenv": "^8.0.0",
-    "express": "^4.16.4",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "knex": "^0.19.0",
-    "morgan": "^1.9.1",
-    "nodemon": "^1.18.10",
-    "pg": "^7.9.0",
-    "uuid": "^3.3.2"
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.4",
+    "pg": "^8.2.1",
+    "uuid": "^8.1.0"
   }
 }

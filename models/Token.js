@@ -1,7 +1,7 @@
 "use strict";
 
 const db = require('../db');
-const uuidv4 = require('uuid/v4');
+const { v4: uuidv4 } = require('uuid');
 const jwt = require('jsonwebtoken');
 const JWT_SECRET = process.env.JWT_SECRET;
 
