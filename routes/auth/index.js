@@ -41,7 +41,10 @@ router.post('/login', (req, res) => {
       .then((refreshToken) => {
         const jwt = Token.generateAccessToken(user);
         const data = {
-          user,
+          'user': {
+            'user_id': user.id,
+            'email': user.email,
+          },
           'access': jwt,
           'refresh': refreshToken,
         };
