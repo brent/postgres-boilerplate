@@ -3,8 +3,8 @@
 const router = require('express').Router();
 const User = require('../../models/User');
 const Token = require('../../models/Token');
-const handleResponse = require('../routeHelpers').handleResponse;
-const requireAuth = require('./authHelpers').requireAuth;
+const handleResponse = require('../../utils/routeHelpers').handleResponse;
+const requireAuth = require('../../utils/authHelpers').requireAuth;
 
 router.post('/signup', (req, res) => {
   const user = {

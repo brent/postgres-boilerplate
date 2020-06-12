@@ -1,9 +1,9 @@
 "use strict";
 
 const router = require('express').Router();
-const handleResponse = require('./routeHelpers').handleResponse;
-const errorHandler = require('./routeHelpers').errorHandler;
-const requireAuth = require('./auth/authHelpers').requireAuth;
+const handleResponse = require('../utils/routeHelpers.js').handleResponse;
+const errorHandler = require('../utils/routeHelpers').errorHandler;
+const requireAuth = require('../utils/authHelpers').requireAuth;
 
 router.get('/', (req, res) => {
   handleResponse(res, { 'message': 'OK' });
