@@ -15,12 +15,15 @@ router.post('/signup', (req, res) => {
 
   User.create(user).then(user => {
     Token.saveTokenForUser(user.id)
+      .then((res) => res.token)
       .then((refreshToken) => {
         const jwt = Token.generateAccessToken(user);
         const data = {
           user,
-          'access': jwt,
-          'refresh': refreshToken,
+          'tokens': {
+            'access': jwt,
+            'refresh': refreshToken,
+          },
         };
 
         handleResponse(res, data);
@@ -38,6 +41,7 @@ router.post('/login', (req, res) => {
 
   User.comparePassword(user).then(user => {
     Token.findTokenForUser(user.id)
+      .then((res) => res.token)
       .then((refreshToken) => {
         const jwt = Token.generateAccessToken(user);
         const data = {
@@ -45,8 +49,10 @@ router.post('/login', (req, res) => {
             'user_id': user.id,
             'email': user.email,
           },
-          'access': jwt,
-          'refresh': refreshToken,
+          'tokens': {
+            'access': jwt,
+            'refresh': refreshToken,
+          },
         };
 
         handleResponse(res, data);
